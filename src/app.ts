@@ -1,14 +1,31 @@
-import { useExpressServer } from 'routing-controllers'
+import dotenv from 'dotenv'
+dotenv.config()
+
+import 'reflect-metadata'
 import express from 'express'
 import path from 'path'
+import { useExpressServer } from 'routing-controllers'
+import { initDb } from './db/connection'
+import { ErrorHandlerMiddleware } from './middlewares/ErrorHandlerMiddleware'
+import { RequestMiddleware } from './middlewares/RequestMiddleware'
+
 
 export const createApp = async () => {
+    await initDb()
+
     const app = express()
 
     useExpressServer(app, {
-        classTransformer: false,
+        cors: true,
+        classTransformer: true,
+        validation: true,
+        defaultErrorHandler: false,
         controllers: [
             path.resolve(__dirname, 'controllers/**/*.*s')
+        ],
+        middlewares: [
+            RequestMiddleware,
+            ErrorHandlerMiddleware
         ]
     })
 
