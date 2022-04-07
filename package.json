@@ -4,6 +4,8 @@
   "description": "",
   "main": "src/server.ts",
   "scripts": {
+    "postinstall": "tsc",
+    "start": "node dist/server.js",
     "dev": "nodemon src/server.ts"
   },
   "author": "mshlz",
