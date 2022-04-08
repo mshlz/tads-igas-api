@@ -3,7 +3,7 @@ import { ExpressMiddlewareInterface, Middleware, UnauthorizedError } from "routi
 import AuthService from "../services/AuthService";
 import UserService from "../services/UserService";
 
-@Middleware({ type: 'before' })
+@Middleware({ type: 'before', priority: 100 })
 export class RequestMiddleware implements ExpressMiddlewareInterface {
     async use(request: Request, response: Response, next: NextFunction) {
         const token = request.headers.authorization?.replace(/^Bearer /, '')
