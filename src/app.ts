@@ -29,5 +29,9 @@ export const createApp = async () => {
         ]
     })
 
+    app.use('*', (_, res) => {
+        res.json({ code: 404, name: 'RouteNotFoundError', message: 'Route not found' })
+    })
+
     return app
 }
