@@ -1,31 +1,26 @@
-import { Product } from "../models/Product"
-import { User, UserType } from "../models/User"
-
-export const DocumentTypeArray = ['cpf', 'cnpj'] as const
-export type DocumentType = typeof DocumentTypeArray[number]
+import { getPublicProduct, Product, ProductModel } from "../models/Product"
 
 class ProductService {
-    async listAllFromDistributor(distributoId: string) {
+    async listAllFromDistributer(distributerId: string) {
         const products = await Product.find({
-            owner: distributoId
+            owner: distributerId
         }).lean()
 
-        return products
+        return products.map(getPublicProduct)
     }
 
-    // async create(name: string, email: string, password: string, type: UserType, document: string, documentType: DocumentType, phone?: string) {
-    //     const user = await User.create({
-    //         name,
-    //         email,
-    //         password,
-    //         cpf: documentType === 'cpf' ? document : undefined,
-    //         cnpj: documentType === 'cnpj' ? document : undefined,
-    //         phone,
-    //         type
-    //     })
+    async create(name: string, description: string, image: string, price: number, quantity: number, distributerId: string) {
+        const product = await Product.create({
+            name,
+            description,
+            image,
+            price,
+            quantity,
+            owner: distributerId
+        })
 
-    //     return user
-    // }
+        return getPublicProduct(product)
+    }
 
 }
 

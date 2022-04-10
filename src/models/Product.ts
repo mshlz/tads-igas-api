@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import { PublicModel, RawModel } from '../helpers/types/mongoose'
 import { UserModel } from './User'
 
 export interface ProductModel {
@@ -7,7 +8,7 @@ export interface ProductModel {
     price: number
     image: string
     quantity: number
-    owner: string | UserModel
+    owner: string | UserModel | PublicModel<UserModel>
 }
 
 export const ProductSchema = new mongoose.Schema<ProductModel>({
@@ -22,3 +23,15 @@ export const ProductSchema = new mongoose.Schema<ProductModel>({
 })
 
 export const Product = mongoose.model('Product', ProductSchema)
+
+// ------------------------------------------------------------
+export const getPublicProduct = (doc: RawModel<ProductModel>): PublicModel<ProductModel> => ({
+    id: doc.id || String(doc._id),
+    name: doc.name,
+    description: doc.description,
+    price: doc.price,
+    image: doc.image,
+    quantity: doc.quantity,
+    createdAt: doc['createdAt'],
+    updatedAt: doc['updatedAt'],
+})
