@@ -1,6 +1,7 @@
-import { Body, Get, JsonController, Post, Req, UseBefore } from 'routing-controllers'
+import { Body, Get, JsonController, Post, UseBefore } from 'routing-controllers'
 import { LoginInput } from '../dto/auth/LoginInput'
 import { RegisterInput } from '../dto/auth/RegisterInput'
+import { SessionUser } from '../helpers/decorators/SessionUser'
 import { success } from '../helpers/http/responses'
 import { IsAuthenticated } from '../middlewares/IsAuthenticated'
 import { UserModel } from '../models/User'
@@ -34,12 +35,10 @@ export class AuthController {
 
     @Get('/self')
     @UseBefore(IsAuthenticated)
-    async self(@Req() req) {
-        // TODO create decorator to extract
-        const user = req['__user__'] as UserModel
+    async self(@SessionUser() user: UserModel) {
 
         return success({
-            _id: String(user._id),
+            id: String(user._id),
             name: user.name,
             email: user.email,
             cpf: user.cpf,
