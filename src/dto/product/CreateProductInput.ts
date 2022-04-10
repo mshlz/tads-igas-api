@@ -1,5 +1,4 @@
-import { IsEmail, IsIn, IsNotEmpty, IsNumber, Length } from "class-validator"
-import { UserType, UserTypeArray } from "../../models/User"
+import { IsNotEmpty, IsNumber, Length } from "class-validator"
 
 export class CreateProductInput {
     @IsNotEmpty()
